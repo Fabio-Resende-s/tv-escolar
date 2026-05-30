@@ -1,319 +1,543 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Painel Escolar PRO TV</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Para meu amor ❤️ - Dia dos Namorados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<style>
-body {
-  margin: 0;
-  display: flex;
-  height: 100vh;
-  background: black;
-  color: white;
-  font-family: 'Segoe UI';
-}
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 55%, #fad0c4 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Poppins', cursive;
+            padding: 20px;
+        }
 
-/* SLIDES */
-.painel-slides {
-  width: 75%;
-  position: relative;
-}
+        /* Container principal do cartão */
+        .card {
+            max-width: 500px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 48px;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.2), 0 0 0 12px rgba(255, 215, 200, 0.6);
+            overflow: hidden;
+            backdrop-filter: blur(2px);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
 
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 1s;
-}
+        .card:hover {
+            transform: scale(1.01);
+        }
 
-.slide.ativo {
-  opacity: 1;
-}
+        /* Área do carrossel de fotos */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            background: #ffe6e3;
+            overflow: hidden;
+            border-bottom: 5px solid #ffb7b2;
+        }
 
-img, video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+        .carousel-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
 
-/* LATERAL */
-.painel-info {
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+        .carousel-slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff0ed;
+        }
 
-/* INFO */
-.hora { font-size: 55px; padding: 20px; }
-.data { font-size: 15px; }
-.clima { font-size: 16px; margin: 20px; }
+        .carousel-slide img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            display: block;
+            transition: all 0.3s;
+        }
 
-.box {
-  width: 90%;
-  text-align: center;
-  border-top: 2px solid #222;
-  padding-top: 18px;
-}
+        /* Navegação do carrossel */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 105, 130, 0.7);
+            backdrop-filter: blur(6px);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
 
-.titulo { color: #00d4ff; }
+        .carousel-btn:hover {
+            background: #ff4d6d;
+            transform: translateY(-50%) scale(1.08);
+        }
 
-/* RODAPÉ */
-.marquee {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  background: black;
-  border-top: 3px solid white;
-}
+        .btn-prev {
+            left: 16px;
+        }
 
-.tag {
-  padding: 10px 20px;
-  font-weight: bold;
-}
+        .btn-next {
+            right: 16px;
+        }
 
-.noticia {
-  flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-}
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 0 12px;
+            background: #fff0ed;
+        }
 
-.noticia span {
-  display: inline-block;
-  padding-left: 100%;
-  animation: marquee 60s linear infinite;
-}
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: #ffb3b0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
 
-@keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
+        .dot.active {
+            background: #ff4d6d;
+            width: 26px;
+            border-radius: 20px;
+        }
 
-.brasil { background: green; }
-.esporte { background: orange; }
-.mundo { background: blue; }
-.tecnologia { background: gray; }
-.educacao { background: purple; }
+        /* Conteúdo da mensagem e coração */
+        .message-area {
+            padding: 28px 28px 38px;
+            text-align: center;
+            background: white;
+        }
 
-</style>
+        .heart-icon {
+            font-size: 48px;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 1.9rem;
+            color: #c72a4f;
+            margin-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .special-message {
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: #4a2e2e;
+            background: #fff7f5;
+            padding: 18px 16px;
+            border-radius: 48px;
+            margin: 20px 0 24px;
+            box-shadow: inset 0 1px 4px #ffdad2, 0 4px 12px rgba(0,0,0,0.02);
+            font-weight: 500;
+        }
+
+        .special-message p {
+            margin-bottom: 12px;
+        }
+
+        .name-sign {
+            font-size: 1rem;
+            font-style: italic;
+            color: #c75c6e;
+            margin-top: 6px;
+        }
+
+        .btn-surpresa {
+            background: linear-gradient(95deg, #ff768a, #ff4d6d);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 12px 26px;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.25s;
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
+            margin-top: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-surpresa:hover {
+            background: linear-gradient(95deg, #ff5e78, #e63952);
+            transform: scale(0.97);
+            box-shadow: 0 4px 12px rgba(255, 77, 109, 0.5);
+        }
+
+        /* modal surpresa */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s;
+        }
+
+        .modal-content {
+            background: white;
+            max-width: 320px;
+            width: 85%;
+            text-align: center;
+            padding: 28px 20px 32px;
+            border-radius: 64px;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: scaleUp 0.3s ease;
+        }
+
+        .modal-content h3 {
+            font-size: 2rem;
+            color: #e63952;
+            margin-bottom: 16px;
+        }
+
+        .modal-content p {
+            font-size: 1.2rem;
+            margin: 16px 0;
+            color: #3b2a2a;
+        }
+
+        .close-modal {
+            background: #ff8c9e;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 16px;
+            cursor: pointer;
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 0 rgba(255,77,109,0.5);}
+            70% { transform: scale(1.12); text-shadow: 0 0 8px #ff99aa;}
+            100% { transform: scale(1);}
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleUp {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* responsivo */
+        @media (max-width: 550px) {
+            .card {
+                border-radius: 36px;
+            }
+            .message-area {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            .special-message {
+                font-size: 1rem;
+            }
+            .carousel-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 20px;
+            }
+        }
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            background: white;
+            padding-bottom: 16px;
+            color: #d47b8a;
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- SLIDES -->
-<div class="painel-slides">
+<div class="card">
+    <!-- Carrossel com 4 fotos -->
+    <div class="carousel-container">
+        <div class="carousel-slider" id="carouselSlider">
+            <!-- As 4 imagens: você deve substituir os links pelas suas fotos -->
+            <!-- Exemplo com placeholders românticos (substitua pelos seus próprios links de imagem ou caminhos locais caso for hospedar) -->
+            <div class="carousel-slide">
+                <img src="imagem.jpeg" alt="Momento especial 1">
+            </div>
+            <div class="carousel-slide">
+                <img src="imagem1.jpg" alt="Momento especial 2">
+            </div>
+            <div class="carousel-slide">
+                <img src="imagem2.jpg" alt="Momento especial 3">
+            </div>
+            <div class="carousel-slide">
+                <img src="imagem4.jpeg" alt="Momento especial 4">
+            </div>
+        </div>
+        <button class="carousel-btn btn-prev" id="prevBtn">‹</button>
+        <button class="carousel-btn btn-next" id="nextBtn">›</button>
+        <div class="dots" id="dotsContainer"></div>
+    </div>
 
-  <div class="slide ativo">
-    <img src="https://images.unsplash.com/photo-1588072432836-e10032774350">
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-11.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-2.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-3.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-4.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-5.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-6.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-7.mp4" muted loop preload="metadata"></video>
-  </div>
-
-  <div class="slide">
-    <video src="./img/escola-8.mp4" muted loop preload="metadata"></video>
-  </div>
-
+    <div class="message-area">
+        <div class="heart-icon">❤️‍🔥</div>
+        <h2>Feliz Dia dos Namorados!</h2>
+        <div class="special-message">
+            <p>✨ ✨ Cada foto ao lado representa um momento especial e uma pequena lembrança dessa fase em que estamos nos conhecendo. ✨ ✨</p>
+            <p>Você torna meus dias mais leves e as nossas conversas sempre deixam um sorriso no meu rosto. Obrigado por cada mensagem, cada momento compartilhado e pela oportunidade de estar te conhecendo melhor. 😊</p>
+            <p>😊 Estou feliz por ter te conhecido e espero que nossas conversas continuem por muito tempo.
+:::🌹</p>
+            <div class="name-sign">— Com carinho, Fábio 😊💌</div>
+        </div>
+        <button class="btn-surpresa" id="surpresaBtn">🎁 Surpresa Especial 🎁</button>
+    </div>
+    <footer> feito com todo amor para você ❤️</footer>
 </div>
 
-<!-- INFO -->
-<div class="painel-info">
-
-  <div>
-    <div class="hora" id="hora"></div>
-    <div class="data" id="data"></div>
-    <div class="clima" id="clima">Carregando clima...</div>
-  </div>
-
-  <div class="box">
-    <div class="titulo">📚 Aula</div>
-    <div id="aula"></div>
-  </div>
-
-  <div class="box">
-    <div class="titulo">📢 Bem-vindos à Escola</div>
-    <div id="aviso"></div>
-  </div>
-
-  <div class="box">
-    <div class="titulo">🍛 Merenda</div>
-    <div id="merenda"></div>
-  </div>
-
-  <div class="box">
-    <div class="titulo">📅 RUNIÃO!</div>
-    <div id="reuniao"></div>
-  </div>
-
-</div>
-
-<!-- RODAPÉ -->
-<div class="marquee">
-  <div class="tag" id="categoria">BRASIL</div>
-  <div class="noticia">
-    <span id="noticias">Carregando notícias...</span>
-  </div>
+<!-- Modal surpresa -->
+<div id="surpresaModal" class="modal">
+    <div class="modal-content">
+        <h3>💖 SURPRESA! 💖</h3>
+        <p>Nossas conversas têm tornado meus dias mais interessantes e especiais</p>
+        <p>Espero que possamos continuar nos conhecendo melhor e compartilhando muitos momentos legais pela frente." 😊🌻</p>
+        <div style="font-size: 2rem;">🥰💕🐻</div>
+        <button class="close-modal" id="closeModalBtn">Fechar com carinho</button>
+    </div>
 </div>
 
 <script>
+    // -------- CONFIGURAÇÃO DO CARROSSEL DE 4 FOTOS ----------
+    const slider = document.getElementById('carouselSlider');
+    const slides = document.querySelectorAll('.carousel-slide');
+    const prevButton = document.getElementById('prevBtn');
+    const nextButton = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('dotsContainer');
+    let currentIndex = 0;
+    const totalSlides = slides.length; // deve ser 4
 
-// RELÓGIO
-function atualizarHora(){
-  let d = new Date();
-  document.getElementById("hora").innerText = d.toLocaleTimeString();
-  document.getElementById("data").innerText = d.toLocaleDateString();
-}
-setInterval(atualizarHora,1000);
-atualizarHora();
+    // Criar pontos indicadores
+    function createDots() {
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === currentIndex) dot.classList.add('active');
+            dot.addEventListener('click', () => {
+                goToSlide(i);
+            });
+            dotsContainer.appendChild(dot);
+        }
+    }
 
+    function updateDots() {
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, idx) => {
+            if (idx === currentIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
 
-// CLIMA
-async function carregarClima(){
-  const apiKey = "47a6dfdfc0d5a23e6d498e136e95d7ab";
+    function goToSlide(index) {
+        if (index < 0) index = 0;
+        if (index >= totalSlides) index = totalSlides - 1;
+        currentIndex = index;
+        const offset = -currentIndex * 100;
+        slider.style.transform = `translateX(${offset}%)`;
+        updateDots();
+    }
 
-  try{
-    const resposta = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Manaus,BR&appid=${apiKey}&units=metric&lang=pt_br`);
-    const dados = await resposta.json();
+    function nextSlide() {
+        if (currentIndex + 1 < totalSlides) {
+            goToSlide(currentIndex + 1);
+        } else {
+            // opcional: loop suave
+            goToSlide(0);
+        }
+    }
 
-    document.getElementById("clima").innerText =
-      `🌡️ ${Math.round(dados.main.temp)}°C - ${dados.weather[0].description}`;
+    function prevSlide() {
+        if (currentIndex - 1 >= 0) {
+            goToSlide(currentIndex - 1);
+        } else {
+            goToSlide(totalSlides - 1);
+        }
+    }
 
-  }catch{
-    document.getElementById("clima").innerText = "⚠️ Clima indisponível";
-  }
-}
-carregarClima();
-setInterval(carregarClima,600000);
+    // Eventos dos botões
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
 
+    // Inicializar dots e primeira posição
+    createDots();
+    goToSlide(0);
 
-// AULA AUTOMÁTICA
-function aula(){
-  let h = new Date().getHours();
-  let texto = "Sem aula";
-
-  if (h >= 7 && h < 8) texto = "Matemática";
-  else if (h < 9) texto = "Português";
-  else if (h < 10) texto = "História";
-
-  document.getElementById("aula").innerText = texto;
-}
-aula();
-
-
-// TEXTOS FIXOS
-document.getElementById("aviso").innerText = " Municipal Maria constança peixoto de paiva!";
-document.getElementById("merenda").innerText = "Arroz, feijão e frango";
-document.getElementById("reuniao").innerText = "Pais e Mestres ";
-
-
-// SLIDES PROFISSIONAL
-let slides = document.querySelectorAll('.slide');
-let index = 0;
-
-// tempo por slide
-let tempos = [
-  5000,
-  5000,
-  5000,
-  5000,
-  12000,
-  8000,
-  12000,
-  15000,
-  111000
-];
-
-function rodarSlides(){
-
-  let atual = slides[index];
-
-  let videoAtual = atual.querySelector("video");
-  if(videoAtual){
-    videoAtual.pause();
-    videoAtual.currentTime = 0;
-  }
-
-  atual.classList.remove('ativo');
-
-  index = (index + 1) % slides.length;
-
-  let proximo = slides[index];
-  proximo.classList.add('ativo');
-
-  let videoNovo = proximo.querySelector("video");
-  if(videoNovo){
-    videoNovo.play();
-  }
-
-  setTimeout(rodarSlides, tempos[index]);
-}
-
-setTimeout(rodarSlides, tempos[index]);
-
-
-// NOTÍCIAS
-let categoriaIndex=0;
-
-async function carregarNoticias(){
-
-  let categorias=["BRASIL","ESPORTE","MUNDO","TECNOLOGIA","EDUCAÇÃO"];
-  let cores=["brasil","esporte","mundo","tecnologia","educacao"];
-
-  let texto="";
-
-  try{
-    let res = await fetch("https://api.spaceflightnewsapi.net/v4/articles/");
-    let data = await res.json();
-
-    data.results.slice(0,5).forEach(n=>{
-      texto += " 📰 " + n.title + " • ";
+    // Opcional: arraste no mobile? não necessário, mas podemos permitir toque simples.
+    let touchStartX = 0;
+    slider.parentElement.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    slider.parentElement.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const diff = touchEndX - touchStartX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+                prevSlide();
+            } else {
+                nextSlide();
+            }
+        }
     });
 
-  }catch{
-    texto="📰 Educação • Escola • Aprendizado • Futuro •";
-  }
+    // ----------- MENSAGEM SURPRESA MODAL -------------
+    const modal = document.getElementById('surpresaModal');
+    const surpresaBtn = document.getElementById('surpresaBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
 
-  document.getElementById("noticias").innerText = texto;
+    function openModal() {
+        modal.style.display = 'flex';
+        // Efeito sonoro opcional? não coloquei som pra não assustar, mas podemos dar um trigger confete simples?
+        // Vamos criar mini confetes virtuais (só por diversão)
+        createConfetti();
+    }
 
-  let tag = document.getElementById("categoria");
-  tag.innerText = categorias[categoriaIndex];
-  tag.className = "tag " + cores[categoriaIndex];
+    function closeModal() {
+        modal.style.display = 'none';
+    }
 
-  categoriaIndex = (categoriaIndex + 1) % categorias.length;
-}
+    surpresaBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
 
-carregarNoticias();
-setInterval(carregarNoticias,15000);
+    // Confetes surpresa simples ao abrir modal (deixa mais festivo)
+    function createConfetti() {
+        const confettiContainer = document.createElement('div');
+        confettiContainer.style.position = 'fixed';
+        confettiContainer.style.top = '0';
+        confettiContainer.style.left = '0';
+        confettiContainer.style.width = '100%';
+        confettiContainer.style.height = '100%';
+        confettiContainer.style.pointerEvents = 'none';
+        confettiContainer.style.zIndex = '1001';
+        document.body.appendChild(confettiContainer);
 
+        const colors = ['#ff4d6d', '#ffb3b0', '#ff8c9e', '#ffd966', '#ffb347', '#ff6b9d'];
+        for (let i = 0; i < 120; i++) {
+            const conf = document.createElement('div');
+            const size = Math.random() * 8 + 4;
+            conf.style.position = 'absolute';
+            conf.style.width = size + 'px';
+            conf.style.height = size + 'px';
+            conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            conf.style.left = Math.random() * 100 + '%';
+            conf.style.top = '-20px';
+            conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+            conf.style.opacity = Math.random() * 0.8 + 0.5;
+            conf.style.animation = `fall ${Math.random() * 2 + 2}s linear forwards`;
+            conf.style.transform = `rotate(${Math.random() * 360}deg)`;
+            confettiContainer.appendChild(conf);
+        }
+
+        // adiciona keyframe temporário
+        if (!document.querySelector('#confettiKeyframe')) {
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'confettiKeyframe';
+            styleSheet.textContent = `
+                @keyframes fall {
+                    0% {
+                        transform: translateY(0) rotate(0deg);
+                        opacity: 1;
+                    }
+                    80% {
+                        opacity: 0.8;
+                    }
+                    100% {
+                        transform: translateY(100vh) rotate(360deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(styleSheet);
+        }
+
+        setTimeout(() => {
+            confettiContainer.remove();
+        }, 2800);
+    }
+
+    // Personalização das imagens: instrução amigável no console e também um hover de dica
+    console.log('%c💖 Dica: Substitua os links das fotos pelos seus momentos! 💖', 'color: #ff4d6d; font-size: 14px; font-weight: bold;');
+    console.log('As fotos estão no carrossel. Basta editar os src das imagens dentro de .carousel-slide img.');
+    
+    // Caso queira trocar as mensagens para o nome dela, pode editar o texto no HTML, ou via JS simples:
+    // Exemplo: Se quiser alterar o nome do assinante dinamicamente via URL? Não necessário. Mas está tudo pronto.
+    // Bônus: efeito de coração pulsante na página inteira ao abrir.
+    // Tudo responsivo e romântico.
 </script>
 
+<!-- NOTA IMPORTANTE PARA VOCÊ SUBSTITUIR AS IMAGENS:
+     DENTRO DO HTML, localize as 4 tags <img> dentro da div com class="carousel-slider".
+     Troque os links "https://picsum.photos/id/..." pelos links reais das suas fotos.
+     Você pode hospedar as fotos no próprio GitHub, ou usar links do Imgur, Google Drive (link direto), etc.
+     Para melhor resultado: mantenha proporção quadrada ou use object-fit: cover (já está).
+     Depois de editar, salve e faça o deploy no GitHub Pages.
+-->
 </body>
 </html>
